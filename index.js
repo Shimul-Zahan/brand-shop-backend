@@ -27,11 +27,18 @@ async function run() {
 
         const database = client.db("productsDB");
         const products = database.collection("products");
+        const cartItem = database.collection("cartItem");
 
         app.get('/products', async (req, res) => {
             const allProducts = await products.find().toArray();
             res.send(allProducts)
         })
+
+        app.get('/carts', async (req, res) => {
+            const allCartItem = await cartItem.find().toArray();
+            res.send(allCartItem)
+        })
+
         app.get('/brand/:id', async (req, res) => {
             const id = req.params.id;
             const query = { brand_name : id.toLocaleLowerCase() };
@@ -51,6 +58,12 @@ async function run() {
             const product = req.body
             // console.log(product)
             const result = await products.insertOne(product);
+            res.send(result);
+        })
+        app.post('/carts', async (req, res) => {
+            const product = req.body
+            console.log(product)
+            const result = await cartItem.insertOne(product);
             res.send(result);
         })
 
