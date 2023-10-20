@@ -29,6 +29,7 @@ async function run() {
         const products = database.collection("products");
         const cartItem = database.collection("cartItem");
 
+
         app.get('/products', async (req, res) => {
             const allProducts = await products.find().toArray();
             res.send(allProducts)
@@ -75,7 +76,6 @@ async function run() {
                     price: body.price,
                     rating: body.rating,
                     category: body.category,
-                    description: body.description
                 },
             };
             const result = await products.updateOne(filter, updateProduct, options);
@@ -112,6 +112,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.get('/', (req, res) => {
+    res.send('Product management server is running')
+})
 
 app.listen(5000, () => {
     console.log('Server running at port 5000');
